@@ -50,7 +50,7 @@ tasks.named('test') {
 jar {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	manifest {
-	 attributes ('Main-Class': 'UndergradThesis.eCertisAPI') //declares the main class
+	 	attributes ('Main-Class': 'client.eCertisAPICalls') //declares the main class
 	 }
 	 
 	from {
