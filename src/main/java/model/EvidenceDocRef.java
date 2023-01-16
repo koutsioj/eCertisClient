@@ -1,7 +1,10 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@SuppressWarnings("unused")
+@JsonPropertyOrder({"Attachment", "ValidityPeriod"})
 public class EvidenceDocRef {
 
 	private Element Attachment;

@@ -6,10 +6,14 @@
  * User Manual available at https://docs.gradle.org/7.4.2/userguide/building_java_projects.html
  */
 
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
 }
+
+sourceCompatibility = '17' //java version
+targetCompatibility = '17' //java version
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -38,8 +42,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
 	
-	jsonLib group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
-    
+	jsonLib group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
+
 }
 
 tasks.named('test') {
@@ -47,12 +51,16 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+archivesBaseName = 'ECertisClient' //name of built jar
+version = '1.0.0' //version of jar
+
 jar {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	manifest {
-	 	attributes ('Main-Class': 'client.eCertisAPICalls') //declares the main class
-	 }
-	 
+	 //	attributes ('Main-Class': 'client.ECertisClient') //declares the main class
+		attributes ('Implementation-Title': project.archivesBaseName,
+	 	'Implementation-Version': project.version) 
+	 } 
 	from {
 	 	configurations.jsonLib.collect { it.isDirectory() ? it : zipTree(it) } //includes the jsonLib group libraries in the jar
 	 }

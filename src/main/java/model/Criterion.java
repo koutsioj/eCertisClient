@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@SuppressWarnings("unused")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @JsonPropertyOrder({"Id", "TypeCode", "Name" ,"Description","DomainID","VersionID","LegislationReference","RequirementGroup","SubCriterion","ParentCriterion"})
 public class Criterion {
@@ -24,9 +25,10 @@ public class Criterion {
 	private CriterionLegislationRef[] LegislationReference;
 	private CriterionRequirementGroup[] RequirementGroup;
 	private Criterion[] SubCriterion;
-	private Criterion ParentCriterion;	
+	private Criterion ParentCriterion;
 
-	
+	private Criterion[] criteriaList;
+
 	@JsonProperty(value="Id")
 	public Map<String, String> getId() {
 		return Id;
@@ -34,7 +36,7 @@ public class Criterion {
 	public void setId(Map<String, String> id) {
 		Id = id;
 	}
-	
+
 	@JsonProperty(value="CriteriaTypeID")
 	public Map<String, String> getCriteriaTypeID() {
 		return CriteriaTypeID;
@@ -42,7 +44,7 @@ public class Criterion {
 	public void setCriteriaTypeID(Map<String, String> criteriaTypeID) {
 		CriteriaTypeID = criteriaTypeID;
 	}
-	
+
 	@JsonProperty(value="CriteriaTypeName")
 	public Map<String, String> getCriteriaTypeName() {
 		return CriteriaTypeName;
@@ -50,7 +52,7 @@ public class Criterion {
 	public void setCriteriaTypeName(Map<String, String> criteriaTypeName) {
 		CriteriaTypeName = criteriaTypeName;
 	}
-	
+
 	@JsonProperty(value="Applicable")
 	public Map<String, String> getApplicable() {
 		return Applicable;
@@ -58,7 +60,7 @@ public class Criterion {
 	public void setApplicable(Map<String, String> applicable) {
 		Applicable = applicable;
 	}
-	
+
 	@JsonProperty(value="Mandatory")
 	public Map<String, String> getMandatory() {
 		return Mandatory;
@@ -66,7 +68,7 @@ public class Criterion {
 	public void setMandatory(Map<String, String> mandatory) {
 		Mandatory = mandatory;
 	}
-	
+
 	@JsonProperty(value="Name")
 	public Element getName() {
 		return Name;
@@ -74,7 +76,7 @@ public class Criterion {
 	public void setName(Element name) {
 		Name = name;
 	}
-	
+
 	@JsonProperty(value="Description")
 	public Element getDescription() {
 		return Description;
@@ -82,7 +84,7 @@ public class Criterion {
 	public void setDescription(Element description) {
 		Description = description;
 	}
-	
+
 	@JsonProperty(value="VersionID")
 	public Map<String, String> getVersionID() {
 		return VersionID;
@@ -90,7 +92,7 @@ public class Criterion {
 	public void setVersionID(Map<String, String> versionID) {
 		VersionID = versionID;
 	}
-	
+
 	@JsonProperty(value="PreviousVersionID")
 	public Map<String, String> getPreviousVersionID() {
 		return PreviousVersionID;
@@ -98,7 +100,7 @@ public class Criterion {
 	public void setPreviousVersionID(Map<String, String> previousVersionID) {
 		PreviousVersionID = previousVersionID;
 	}
-	
+
 	@JsonProperty(value="TypeCode")
 	public Map<String, String> getTypeCode() {
 		return TypeCode;
@@ -106,7 +108,7 @@ public class Criterion {
 	public void setTypeCode(Map<String, String> typeCode) {
 		TypeCode = typeCode;
 	}
-	
+
 	@JsonProperty(value="DomainID")
 	public Map<String, String> getDomainID() {
 		return DomainID;
@@ -114,7 +116,7 @@ public class Criterion {
 	public void setDomainID(Map<String, String> domainID) {
 		DomainID = domainID;
 	}
-	
+
 	@JsonProperty(value="LegislationReference")
 	public CriterionLegislationRef[] getLegislationReference() {
 		return LegislationReference;
@@ -123,7 +125,7 @@ public class Criterion {
 			CriterionLegislationRef[] legislationReference) {
 		LegislationReference = legislationReference;
 	}
-	
+
 	@JsonProperty(value="RequirementGroup")
 	public CriterionRequirementGroup[] getRequirementGroup() {
 		return RequirementGroup;
@@ -131,7 +133,7 @@ public class Criterion {
 	public void setRequirementGroup(CriterionRequirementGroup[] requirementGroup) {
 		RequirementGroup = requirementGroup;
 	}
-	
+
 	@JsonProperty(value="SubCriterion")
 	public Criterion[] getSubCriterion() {
 		return SubCriterion;
@@ -139,7 +141,7 @@ public class Criterion {
 	public void setSubCriterion(Criterion[] subCriterion) {
 		SubCriterion = subCriterion;
 	}
-	
+
 	@JsonProperty(value="ParentCriterion")
 	public Criterion getParentCriterion() {
 		return ParentCriterion;
@@ -147,5 +149,12 @@ public class Criterion {
 	public void setParentCriterion(Criterion parentCriterion) {
 		ParentCriterion = parentCriterion;
 	}
-	
+
+	@JsonProperty(value="criterion")
+	public Criterion[] getCriteriaList() {
+		return criteriaList;
+	}
+	public void setCriteriaList(Criterion[] criteriaList) {
+		this.criteriaList = criteriaList;
+	}
 }

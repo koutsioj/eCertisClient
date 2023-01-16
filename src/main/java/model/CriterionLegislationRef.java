@@ -5,6 +5,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+@SuppressWarnings("unused")
 @JsonPropertyOrder({"Title","Description","JurisdictionLevelCode","Article","URI"})
 public class CriterionLegislationRef {
 
@@ -13,7 +14,7 @@ public class CriterionLegislationRef {
 	private Map<String, String> JurisdictionLevelCode;
 	private Element Article;
 	private Map<String, String> URI;
-	
+
 	@JsonProperty(value="Title")
 	public Element getTitle() {
 		return Title;
@@ -21,7 +22,7 @@ public class CriterionLegislationRef {
 	public void setTitle(Element title) {
 		Title = title;
 	}
-	
+
 	@JsonProperty(value="Description")
 	public Element getDescription() {
 		return Description;
@@ -29,7 +30,7 @@ public class CriterionLegislationRef {
 	public void setDescription(Element description) {
 		Description = description;
 	}
-	
+
 	@JsonProperty(value="JurisdictionLevelCode")
 	public Map<String, String> getJurisdictionLevelCode() {
 		return JurisdictionLevelCode;
@@ -38,7 +39,7 @@ public class CriterionLegislationRef {
 			Map<String, String> jurisdictionLevelCode) {
 		JurisdictionLevelCode = jurisdictionLevelCode;
 	}
-	
+
 	@JsonProperty(value="Article")
 	public Element getArticle() {
 		return Article;
@@ -46,7 +47,7 @@ public class CriterionLegislationRef {
 	public void setArticle(Element article) {
 		Article = article;
 	}
-	
+
 	@JsonProperty(value="URI")
 	public Map<String, String> getURI() {
 		return URI;
@@ -54,6 +55,4 @@ public class CriterionLegislationRef {
 	public void setURI(Map<String, String> uRI) {
 		URI = uRI;
 	}
-
-
 }
