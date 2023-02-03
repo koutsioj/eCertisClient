@@ -13,7 +13,6 @@ public class Element { //contains values of an element of a criterion
 	private String languageID;
 
 	//the properties bellow are needed for any specific criterion
-	private String currencyID;
 	private Element description;
 	private Element Name;
 	private Element Attachment;
@@ -31,13 +30,6 @@ public class Element { //contains values of an element of a criterion
 	}
 	public void setLanguageID(String languageID) {
 		this.languageID = languageID;
-	}
-
-	public String getCurrencyID() {
-		return currencyID;
-	}
-	public void setCurrencyID(String currencyID) {
-		this.currencyID = currencyID;
 	}
 
 	public Element getDescription() {

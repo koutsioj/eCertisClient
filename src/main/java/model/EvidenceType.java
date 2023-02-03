@@ -15,7 +15,7 @@ public class EvidenceType {
 	private Element Name;
 	private Element Description;
 	private Map<String, String> VersionID;
-	private Element FeeAmount;
+	private ElementDuplicateProps FeeAmount;
 	private Element EvidenceIntendedUse;
 	private EvidenceIssuer[] EvidenceIssuerParty;
 	private Map<String, String> AddresseeDescription;
@@ -63,10 +63,10 @@ public class EvidenceType {
 	}
 
 	@JsonProperty(value="FeeAmount")
-	public Element getFeeAmount() {
+	public ElementDuplicateProps getFeeAmount() {
 		return FeeAmount;
 	}
-	public void setFeeAmount(Element feeAmount) {
+	public void setFeeAmount(ElementDuplicateProps feeAmount) {
 		FeeAmount = feeAmount;
 	}
 

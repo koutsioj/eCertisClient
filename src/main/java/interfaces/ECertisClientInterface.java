@@ -1,6 +1,5 @@
 package interfaces;
 
-import javax.annotation.Nullable;
 import java.time.LocalDate;
 
 public interface ECertisClientInterface {
