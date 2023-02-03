@@ -7,6 +7,7 @@ import model.Criterion;
 import model.EvidenceType;
 import javax.annotation.Nullable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -14,6 +15,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -22,6 +24,33 @@ import java.util.concurrent.*;
  */
 @SuppressWarnings("unused")
 public class ECertisClient implements ECertisClientInterface {
+
+    //main tests the library using multithreading
+    public static void main(String[] args) throws URISyntaxException, ExecutionException, InterruptedException {
+
+        ECertisClient client = new ECertisClient();
+
+        ExecutorService executor = Executors.newFixedThreadPool(5);
+        List<Future<String>> results = new ArrayList<>();
+
+        Future<String> future1 = executor.submit(() -> client.criteriaCall("https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/","be", "",null,""));
+        System.out.println("This is printed before method criteriaCall is completed because of multithreading");
+        Future<String> future2 = executor.submit(() -> client.evidencesCall("https://ec.europa.eu/growth/tools-databases/ecertisrest/evidences","be", LocalDate.now().minusYears(3),null));
+
+
+        results.add(future1);
+        results.add(future2);
+
+        for (Future<String> result : results) {
+            String value = null;
+            value = result.get(); //waits until the threads from future1 and future2 are both finished
+
+            System.out.println("Result of Thread: " + value +"\n\n\n\n\n");
+
+        }
+        executor.shutdown();
+    }
+
 
     /**
      * Creates and sends a GET request and deserializes the data from the request to an object.
@@ -53,7 +82,7 @@ public class ECertisClient implements ECertisClientInterface {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        //System.out.println("URI: "+uri+"\n");
+        System.out.println("jsonMarshaller is finished, URL is : "+uri);
         return json;
     }
 
