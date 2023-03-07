@@ -2,11 +2,13 @@
 .gradle
 
 # Ignore Gradle build output directory
-*/build/*
+build/*
 
-!*/build/libs
+!build/libs
+!build/docs
 
-# Ingore Eclipse files
+# Ingore IDE files
+.idea
 .classpath
 .project
 .settings/

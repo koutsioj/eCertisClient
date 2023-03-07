@@ -2,7 +2,6 @@ package client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import interfaces.ECertisClientInterface;
 import model.Criterion;
 import model.EvidenceType;
 import javax.annotation.Nullable;
@@ -15,13 +14,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Contains methods that represent eCertis API calls.
  * They all return a json String that contains information about Criteria and/or Evidences.
  */
 @SuppressWarnings("unused")
-public class ECertisClient implements ECertisClientInterface {
+public class ECertisClient implements IECertisClient {
+
+    private static Logger logger = Logger.getLogger(ECertisClient.class.getName());
 
     /**
      * Creates and sends a GET request and deserializes the data from the request to an object.
@@ -50,10 +53,9 @@ public class ECertisClient implements ECertisClientInterface {
             deserializationValue = mapper.readValue(output, deserializationValue.getClass());
             json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(deserializationValue);
         } catch (JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "logging : Deserialization unsuccessful. \n" + e.getMessage() , new Exception("JsonProcessingException"));
         }
-        //System.out.println("URI: "+uri+"\n");
+        System.out.println("jsonMarshaller is finished, URL is : "+uri);
         return json;
     }
 
@@ -72,7 +74,7 @@ public class ECertisClient implements ECertisClientInterface {
      */
 
     @Override
-    public String criteriaCall(String uri, String nationalEntity, String type, @Nullable LocalDate updateDate, @Nullable String lang) {
+    public String getCriteria(String uri, String nationalEntity, String type, @Nullable LocalDate updateDate, @Nullable String lang) {
 
         String updateDateFormatted;
         if (updateDate != null) {
@@ -98,7 +100,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String criteriaCall(String uri, String scenarioId, String domainId) {
+    public String getCriteria(String uri, String scenarioId, String domainId) {
 
         if (scenarioId == null || scenarioId.isBlank() || domainId == null)
         {
@@ -121,7 +123,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String criterionCall(String uri, String id, String version, @Nullable String lang, String countryFilter) {
+    public String getCriterion(String uri, String id, String version, @Nullable String lang, String countryFilter) {
 
         if (id == null || id.isBlank() || countryFilter == null || countryFilter.isBlank() || version == null) {
             throw new IllegalArgumentException("'id' and 'countryFilter' can not be null or blank. 'version' can not be null");
@@ -143,7 +145,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String criterionMdCall(String uri,String id, String version, @Nullable String lang, String nationalEntity) {
+    public String getCriterionSimplified(String uri, String id, String version, @Nullable String lang, String nationalEntity) {
 
         if (id == null || id.isBlank() || version == null || nationalEntity == null) {
             throw new IllegalArgumentException("'id' can not be null or blank. 'version' and 'nationalEntity' can not be null");
@@ -155,7 +157,7 @@ public class ECertisClient implements ECertisClientInterface {
     }
 
     /**
-     * Returns a specific version of a criterion, with all sub criterion linked to it and for each one returns all evidences that fulfill the criterion and all laws for all countries.
+     * Returns a specific version of a criterion used by ESPD, with all sub criterion linked to it and for each one returns all evidences that fulfill the criterion and all laws for all countries.
      *
      * @param uri           The URI of the request. E.g: https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/
      * @param id            specify the id of a criterion
@@ -165,7 +167,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String criterionESPDCall(String uri, String id, String version, @Nullable String lang, @Nullable String countryFilter) {
+    public String getESPDCriterion(String uri, String id, String version, @Nullable String lang, @Nullable String countryFilter) {
 
         if (id == null || id.isBlank() || version == null) {
             throw new IllegalArgumentException("'id' can not be null or blank. 'version' can not be null");
@@ -187,7 +189,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String evidencesCall(String uri, String nationalEntity, @Nullable LocalDate updateDate, @Nullable String lang) {
+    public String getEvidences(String uri, String nationalEntity, @Nullable LocalDate updateDate, @Nullable String lang) {
 
         String updateDateFormatted;
         if (updateDate != null) {
@@ -218,7 +220,7 @@ public class ECertisClient implements ECertisClientInterface {
      * @return json String
      */
     @Override
-    public String evidenceCall(String uri,String id, String version, @Nullable String lang) {
+    public String getEvidence(String uri, String id, String version, @Nullable String lang) {
 
         if (id == null || id.isBlank() || version == null) {
             throw new IllegalArgumentException("'id' cannot be null or blank and 'version' cannot be null.");

@@ -35,7 +35,7 @@ public class ECertisClientTest {
         }
         String fullUrl = uri + "?nationalEntity=" + nationalEntity + "&type=" + type + "&updateDate=" + updateDateFormatted + "&lang=" + lang; //used below for testing from the webpage itself
 
-        String jsonResponse = eCertisClientTest.criteriaCall(uri,nationalEntity,type,updateDate,lang);
+        String jsonResponse = eCertisClientTest.getCriteria(uri,nationalEntity,type,updateDate,lang);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -71,7 +71,7 @@ public class ECertisClientTest {
         String domainId = "";
         String fullUrl = uri + "?scenarioId=" + scenarioId + "&domainId=" + domainId;
 
-        String jsonResponse = eCertisClientTest.criteriaCall(uri, scenarioId, domainId);
+        String jsonResponse = eCertisClientTest.getCriteria(uri, scenarioId, domainId);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -118,7 +118,7 @@ public class ECertisClientTest {
 
         String fullUrl = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
 
-        String jsonResponse = eCertisClientTest.criterionCall(uri,id,version,lang,countryFilter);
+        String jsonResponse = eCertisClientTest.getCriterion(uri,id,version,lang,countryFilter);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -164,7 +164,7 @@ public class ECertisClientTest {
 
         String fullUrl = uri + id + "/" + version + "?lang=" + lang + "&nationalEntity=" + nationalEntity;
 
-        String jsonResponse = eCertisClientTest.criterionMdCall(uri,id,version,lang,nationalEntity);
+        String jsonResponse = eCertisClientTest.getCriterionSimplified(uri,id,version,lang,nationalEntity);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -203,7 +203,7 @@ public class ECertisClientTest {
 
         String fullUrl = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
 
-        String jsonResponse = eCertisClientTest.criterionESPDCall(uri,id,version,lang,countryFilter);
+        String jsonResponse = eCertisClientTest.getESPDCriterion(uri,id,version,lang,countryFilter);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -257,7 +257,7 @@ public class ECertisClientTest {
         }
         String fullUrl = uri + "?nationalEntity=" + nationalEntity + "&updateDate=" + updateDateFormatted + "&lang=" + lang;
 
-        String jsonResponse = eCertisClientTest.evidencesCall(uri,nationalEntity,updateDate,lang);
+        String jsonResponse = eCertisClientTest.getEvidences(uri,nationalEntity,updateDate,lang);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -290,7 +290,7 @@ public class ECertisClientTest {
 
         String fullUrl = uri + id + "/" + version + "?lang=" + lang;
 
-        String jsonResponse = eCertisClientTest.evidenceCall(uri,id,version,lang);
+        String jsonResponse = eCertisClientTest.getEvidence(uri,id,version,lang);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
