@@ -60,8 +60,8 @@ public class ECertisClientTest {
         assertThat(criteriaTypeIdNode.get("value").asText(), is(notNullValue()));
 
 
-           get(fullUrl).then().statusCode(200).assertThat()
-                .body("criterion[0].Id.value", equalTo(idNode.get("value").asText())); //checks if the value of the id of the first criterion of the json provided by the webpage is the same as the one from criteriaCall
+           get(fullUrl).then().statusCode(200).assertThat() //'get' request to the eCertis API
+                .body("criterion[0].Id.value", equalTo(idNode.get("value").asText())); //checks if the value of the id of the first criterion of the json provided by the eCertisAPI is the same as the one from criteriaCall
     }
 
     @Test

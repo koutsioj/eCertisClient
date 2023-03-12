@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @SuppressWarnings("unused")
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@JsonPropertyOrder({"Id", "TypeCode", "Name" ,"Description","DomainID","VersionID","LegislationReference","RequirementGroup","SubCriterion","ParentCriterion"})
+@JsonPropertyOrder({"Id","TypeCode","CriteriaTypeID","CriteriaTypeName","Applicable","Mandatory", "Name" ,"Description","DomainID","VersionID","LegislationReference","RequirementGroup","SubCriterion","ParentCriterion"})
 public class Criterion {
 
 	private Map<String, String> Id;

@@ -10,6 +10,8 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+	// Allows the library to be published to maven local.
+	id 'maven-publish'
 }
 
 sourceCompatibility = '17' //java version
@@ -69,3 +71,22 @@ jar {
 	 	configurations.jsonLib.collect { it.isDirectory() ? it : zipTree(it) } //includes the jsonLib group libraries in the jar
 	 }
 }
+
+// Publishing the library to the local maven repository
+group = 'com.github.koutsioj'
+version = '1.0.0'
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+		mavenLocal()
+	}
+}
+
+//publishing the library automatically whenever assemble or build tasks are executed
+tasks.assemble.dependsOn(tasks.publishToMavenLocal)
+tasks.build.dependsOn(tasks.publishToMavenLocal)
