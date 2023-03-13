@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Criterion;
 import model.EvidenceType;
+
 import javax.annotation.Nullable;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,9 +14,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.concurrent.*;
-import java.util.logging.Logger;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Contains methods that represent eCertis API calls.

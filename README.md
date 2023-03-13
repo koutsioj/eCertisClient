@@ -41,6 +41,7 @@ try {
 ## Technologies
 * Java 17
 * Gradle 7.4.2
-	
+
 ## Setup
-To use this library, download the .jar file in 'build/libs' and add it as an external library to your Java project.
+To use this library, download the .jar file in 'build/libs' and add it as an external library to your Java project. 
+Alternatively, downloading the project and using the assemble/build gradle tasks automatically publishes the library to your maven local repository. Then, you can use the maven local repository to add the library as a dependency by the name of `com.github.koutsioj:eCertisClient:1.0.0` to your other projects.

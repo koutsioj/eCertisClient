@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-public class ECertisClientTest {
+public class ECertisClientRestAssuredTests {
 
     ECertisClient eCertisClientTest = new ECertisClient();
 
