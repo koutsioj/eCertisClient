@@ -8,4 +8,5 @@
  */
 
 rootProject.name = 'eCertisClient'
+include('caching')
 include('lib')

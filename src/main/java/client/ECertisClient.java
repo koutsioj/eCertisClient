@@ -2,8 +2,10 @@ package client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.koutsioj.CacheHelper;
 import model.Criterion;
 import model.EvidenceType;
+import org.ehcache.Cache;
 
 import javax.annotation.Nullable;
 import java.net.URI;
@@ -26,6 +28,8 @@ import java.util.logging.Logger;
 public class ECertisClient implements IECertisClient {
 
     private static Logger logger = Logger.getLogger(ECertisClient.class.getName());
+    private static CacheHelper cacheHelper = new CacheHelper();
+    private static Cache<String,String> cache = cacheHelper.createHeapCache("eCertisCache",10,360);
 
     /**
      * Creates and sends a GET request and deserializes the data from the request to an object.
@@ -36,7 +40,7 @@ public class ECertisClient implements IECertisClient {
      * @param deserializationValue instance of the class used for deserialization
      * @return json String
      */
-    private static String jsonMarshaller(String uri, Object deserializationValue) {
+    private String jsonMarshaller(String uri, Object deserializationValue) {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -57,6 +61,8 @@ public class ECertisClient implements IECertisClient {
             logger.log(Level.SEVERE, "logging : Deserialization unsuccessful. \n" + e.getMessage() , new Exception("JsonProcessingException"));
         }
         System.out.println("jsonMarshaller is finished, URL is : "+uri);
+
+        cache.put(uri,json);
         return json;
     }
 
@@ -87,6 +93,10 @@ public class ECertisClient implements IECertisClient {
         }
        uri = uri + "?nationalEntity=" + nationalEntity + "&type=" + type + "&updateDate=" + updateDateFormatted + "&lang=" + lang;
 
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
+
         Criterion criteriaList = new Criterion();
         return jsonMarshaller(uri, criteriaList);
     }
@@ -108,6 +118,10 @@ public class ECertisClient implements IECertisClient {
             throw new IllegalArgumentException("'scenarioId' can not be null or blank and 'domainId' can not be null");
         }
         uri = uri + "?scenarioId=" + scenarioId + "&domainId=" + domainId;
+
+        if (cache.containsKey(uri)) {
+            return cache.get(uri);
+        }
 
         Criterion criteriaList = new Criterion();
         return jsonMarshaller(uri, criteriaList);
@@ -131,6 +145,10 @@ public class ECertisClient implements IECertisClient {
         }
         uri = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
 
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
+
         Criterion criterion = new Criterion();
         return jsonMarshaller(uri, criterion);
     }
@@ -153,6 +171,11 @@ public class ECertisClient implements IECertisClient {
         }
 
         uri = uri + id + "/" + version + "?lang=" + lang + "&nationalEntity=" + nationalEntity;
+
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
+
         Criterion criterion = new Criterion();
         return jsonMarshaller(uri, criterion);
     }
@@ -175,6 +198,11 @@ public class ECertisClient implements IECertisClient {
         }
 
         uri = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
+
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
+
         Criterion criterion = new Criterion();
         return jsonMarshaller(uri, criterion);
     }
@@ -207,6 +235,10 @@ public class ECertisClient implements IECertisClient {
 
         uri = uri + "?nationalEntity=" + nationalEntity + "&updateDate=" + updateDateFormatted + "&lang=" + lang;
 
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
+
         ArrayList<EvidenceType> evidenceList = new ArrayList<>();
         return jsonMarshaller(uri, evidenceList);
     }
@@ -228,6 +260,10 @@ public class ECertisClient implements IECertisClient {
         }
 
         uri = uri + id + "/" + version + "?lang=" + lang;
+
+        if (cache.containsKey(uri)) {
+            return cache.get(uri); //gets the value for that key
+        }
 
         EvidenceType evidenceList = new EvidenceType();
         return jsonMarshaller(uri, evidenceList);

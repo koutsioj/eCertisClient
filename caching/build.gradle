@@ -1,0 +1,38 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //uses 'Ehcache' and includes it as a dependency when the 'caching' module is used as dependency
+    api 'org.ehcache:ehcache:3.10.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+group 'com.github.koutsioj'
+version '1.0.0'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
+//publishing the library automatically whenever assemble or build tasks are executed
+tasks.assemble.dependsOn(tasks.publishToMavenLocal)
+tasks.build.dependsOn(tasks.publishToMavenLocal)

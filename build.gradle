@@ -22,12 +22,15 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    // configuration that holds jars to include in the jar
-    jsonLib
-}
+//configurations {
+//    // configuration that holds jars to include in the jar
+//    jsonLib
+//}
 
 dependencies {
+	// Use the 'caching' module
+	implementation project(':caching')
+
 	// Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 	// https://mvnrepository.com/artifact/io.rest-assured/rest-assured
@@ -50,7 +53,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
 	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
 
-	jsonLib group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
+//	jsonLib group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.1'
 }
 
 tasks.named('test') {
@@ -68,8 +71,11 @@ jar {
 	 	'Implementation-Version': project.version) 
 	 } 
 	from {
-	 	configurations.jsonLib.collect { it.isDirectory() ? it : zipTree(it) } //includes the jsonLib group libraries in the jar
-	 }
+		//configurations.jsonLib.collect { it.isDirectory() ? it : zipTree(it) } //includes the jsonLib group libraries in the jar
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+
+		//configurations.compileClasspath.filter { it.name.endsWith('jar') }.collect { zipTree(it) }
+	}
 }
 
 // Publishing the library to the local maven repository
