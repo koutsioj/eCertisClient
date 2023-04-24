@@ -31,10 +31,10 @@ public class CacheHelper {
         return cache;
     }
 
-    public Cache<String , String> getCache(String alias) {
-        Cache<String, String> cache =
-                cacheManager.getCache(alias, String.class, String.class);
-
-        return cache;
-    }
+//    public Cache<String , String> getCache(String alias) {
+//        Cache<String, String> cache =
+//                cacheManager.getCache(alias, String.class, String.class);
+//
+//        return cache;
+//    }
 }

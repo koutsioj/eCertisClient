@@ -38,6 +38,14 @@ try {
 }
 ```
 
+You may also enable caching by using the boolean constructor as shown below :
+```
+ECertisClient client = new ECertisClient(true);
+...
+ json = client.criterionCall(uri, id, version, lang, countryFilter);
+...
+```
+
 ## Technologies
 * Java 17
 * Gradle 7.4.2
