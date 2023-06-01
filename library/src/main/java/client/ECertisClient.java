@@ -8,6 +8,7 @@ import model.EvidenceType;
 import org.ehcache.Cache;
 
 import javax.annotation.Nullable;
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 /**
@@ -29,10 +31,11 @@ import java.util.logging.Logger;
 public class ECertisClient implements IECertisClient {
 
     public ECertisClient() {
+        enableLogging();
     }
 
     public ECertisClient(boolean cacheEnabled) {
-
+        enableLogging();
         CacheHelper cacheHelper = new CacheHelper();
         if (cacheEnabled == true) {
             cache = cacheHelper.createHeapCache("eCertisCache", 10, 360);
@@ -41,6 +44,56 @@ public class ECertisClient implements IECertisClient {
 
     private static Logger logger = Logger.getLogger(ECertisClient.class.getName());
     private static Cache<String,String> cache;
+    private static LogManager logManager;
+
+    private static void enableLogging() {
+        File logProperties = new File("logging.properties");
+        File logFile = new File("logFile.log");
+
+        //creates the logging.properties file if it doesn't exist and writes the configuration for logFile inside it.
+        if (!logProperties.exists()) {
+            try {
+                logProperties.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create new log file\n" +e);
+            }
+
+            FileWriter fileWriter;
+            String content = "handlers=java.util.logging.FileHandler\n" +
+                    ".level=SEVERE\n" +
+                    ".level=INFO\n" +
+                    "java.util.logging.FileHandler.pattern=logFile.log\n" +
+                    "java.util.logging.FileHandler.limit=50000\n" +
+                    "java.util.logging.FileHandler.count=1\n" +
+                    "java.util.logging.FileHandler.append=true\n" +
+                    "java.util.logging.FileHandler.formatter=java.util.logging.SimpleFormatter";
+
+            try {
+                fileWriter = new FileWriter(logProperties);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                bufferedWriter.write(content);
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException("Could not write into file 'logging.properties'\n" +e);
+            }
+        }
+
+        //creates the logFile.log if it doesn't exist.
+        if (!logFile.exists()) {
+            try {
+                logFile.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("Could not create new log file\n" +e);
+            }
+        }
+        //uses the configuration from logging.properties
+        try {
+            LogManager.getLogManager().readConfiguration(new FileInputStream("logging.properties"));
+        } catch (IOException e) {
+            throw new RuntimeException("Could not read log file\n" +e);
+        }
+    }
 
     /**
      * Creates and sends a GET request and deserializes the data from the request to an object.
