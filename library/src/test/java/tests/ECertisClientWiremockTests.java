@@ -186,38 +186,6 @@ public class ECertisClientWiremockTests {
     }
 
     @RepeatedTest(2)
-    public void getESPDCriterion_WhenIdAndOtherParametersAreCorrect_ReserialisedStubResponseIsEqualToMethodOutput_AndWithoutIndentationStubResponseIsEqualToMethodOutput(RepetitionInfo repetitionInfo) throws IOException {
-
-        String id = repetitionInfo.getCurrentRepetition() == 1 ? "811b3d07-4ef1-47a1-a16c-d973f0e65b1b" : "811b3d07-4ef1-47a1-a16c-d973f0e65b1b";
-        String version = repetitionInfo.getCurrentRepetition() == 1 ? "" : "3";
-        String lang = repetitionInfo.getCurrentRepetition() == 1 ? "" : "es";
-        String countryFilter = repetitionInfo.getCurrentRepetition() == 1 ? "" : "be";
-
-        //saved (raw) response from the eCertis API from postman
-        String responseBodyInput = repetitionInfo.getCurrentRepetition() == 1 ?
-                "src/test/resources/StubResponseBodyAcceptance/getESPDCriterion.json" : "src/test/resources/StubResponseBodyProduction/getESPDCriterion.json";
-
-        String input = new String(Files.readAllBytes(Paths.get(responseBodyInput)));
-        String uri ="http://localhost:" + wm.port() + "/getESPDCriterion/";
-        String stubUrl = "/getESPDCriterion/"+id+"/"+version+"?lang="+lang+"&countryFilter="+countryFilter;
-        stubFor(get(urlEqualTo(stubUrl))
-                .willReturn(aResponse().withBody(input)));
-
-        String getESPDCriterionOutput = eCertisClient.getESPDCriterion(uri,id,version,lang,countryFilter);
-
-        ObjectMapper mapper = new ObjectMapper();
-        Criterion APIList = new Criterion();
-
-        //Deserializes and then re-serializes the eCertis API Response with default pretty printing
-        APIList = mapper.readValue(input, APIList.getClass());
-        String APIReserializedInput = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(APIList);
-
-        assertThat(APIReserializedInput, is(getESPDCriterionOutput)); //checks that the re-serialized input from the file is the same as the output of the library method
-        assertThat(input.replaceAll("\\s", ""), is(getESPDCriterionOutput.replaceAll("\\s", ""))); //checks that the eCertis API response is the same as the method output when they have no indentation
-        //Both of the above should be true since the method only changes the indentation of the response of the API with deserialization and re-serialization.
-    }
-
-    @RepeatedTest(2)
     public void getEvidences_WhenNationalEntityAndOtherParametersAreCorrect_ReserialisedStubResponseIsEqualToMethodOutput_AndWithoutIndentationStubResponseIsEqualToMethodOutput(RepetitionInfo repetitionInfo) throws IOException {
 
         String nationalEntity = repetitionInfo.getCurrentRepetition() == 1 ? "gr" : "be";

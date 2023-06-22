@@ -8,8 +8,6 @@ getCriterion.json -> The json response from a get request to the url : https://w
 
 getCriterionSimplified.json -> The json response from a get request to the url : https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteriaMd/c27b7c4e-c837-4529-b867-ed55ce639db5/?lang=&nationalEntity=be using postman.
 
-getESPDCriterion.json -> The json response from a get request to the url : https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/811b3d07-4ef1-47a1-a16c-d973f0e65b1b/?lang=&countryFilter= using postman.
-
 getEvidences.json -> The json response from a get request to the url : https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/evidences?nationalEntity=gr using postman.
 
 getEvidence.json -> The json response from a get request to the url : https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/evidences/f4701b97-6fda-40cb-8352-04168090574b using postman.

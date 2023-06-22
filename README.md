@@ -26,23 +26,20 @@ String id = "c27b7c4e-c837-4529-b867-ed55ce639db5";
 String version = "2";
 String lang = "";
 String countryFilter = "be";
-String json = null;
-try {
-     // call the getCriterion method with the parameters
-     json = client.criterionCall(uri, id, version, lang, countryFilter);
+String jsonResponse;
 
-     System.out.println(json);
-} catch (Exception e) {
-     // handle any exceptions that might be thrown
-     System.err.println("An error occurred: " + e.getMessage());
-}
+// call the getCriterion method with the parameters
+jsonResponse = client.getCriterion(uri, id, version, lang, countryFilter);
+
+System.out.println(json);
+
 ```
 
 You may also enable caching by using the boolean constructor as shown below :
 ```
 ECertisClient client = new ECertisClient(true);
 ...
- json = client.criterionCall(uri, id, version, lang, countryFilter);
+jsonResponse = client.getCriterion(uri, id, version, lang, countryFilter);
 ...
 ```
 

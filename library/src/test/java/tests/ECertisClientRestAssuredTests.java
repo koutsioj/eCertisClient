@@ -5,7 +5,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -109,9 +113,10 @@ public class ECertisClientRestAssuredTests {
                 .body("criterion[0].Id.value", equalTo(idNode.get("value").asText()));
     }
 
-    @Test
-    public void CriterionCall_WhenIdAndLangAndCountryFilterAreCorrect_JsonElementValuesAreNotNull_AndSpecificTestValuesAreCorrect() {
-        String uri = "https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/";
+    @RepeatedTest(2)
+    public void CriterionCall_WhenIdAndLangAndCountryFilterAreCorrect_JsonElementValuesAreNotNull_AndSpecificTestValuesAreCorrect(RepetitionInfo repetitionInfo) throws IOException {
+        //runs twice, using a different uri
+        String uri = repetitionInfo.getCurrentRepetition() == 1 ? "https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/" : "https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/";
         String id = "c27b7c4e-c837-4529-b867-ed55ce639db5";
         String version = "";
         String lang = "fr";
@@ -191,53 +196,6 @@ public class ECertisClientRestAssuredTests {
                 .body("Id.value", equalTo(idNode.get("value").asText()))
                 .body("LegislationReference[0].Title.value", equalTo(legislationReferenceNode.get(0).get("Title").get("value").asText()))
                 .body("RequirementGroup[0].Id.value", equalTo(requirementGroupNode.get(0).get("Id").get("value").asText()));
-    }
-
-    @Test
-    public void criterionESPDCall_WhenIdIsCorrect_JsonElementValuesAreNotNull_AndSpecificTestValuesAreCorrect() {
-        String uri = "https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/";
-
-        String id = "811b3d07-4ef1-47a1-a16c-d973f0e65b1b";
-        String version = "";
-        String lang = "";
-        String countryFilter = "";
-
-        String fullUrl = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
-
-        String jsonResponse = eCertisClientTest.getESPDCriterion(uri,id,version,lang,countryFilter);
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode rootNode = null;
-        try {
-            rootNode = mapper.readValue(jsonResponse, JsonNode.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        JsonNode idNode = rootNode.get("Id");
-        JsonNode typeCodeNode = rootNode.get("TypeCode");
-        JsonNode nameNode = rootNode.get("Name");
-        JsonNode descriptionNode = rootNode.get("Description");
-        JsonNode domainIdNode = rootNode.get("DomainID");
-        JsonNode versionIdNode = rootNode.get("VersionID");
-        JsonNode legislationReferenceNode = rootNode.get("LegislationReference");
-        JsonNode requirementGroup = rootNode.get("RequirementGroup");
-        JsonNode parentCriterionNode = rootNode.get("ParentCriterion");
-
-        assertThat(idNode.get("value").asText(), is(notNullValue()));
-        assertThat(typeCodeNode.get("value").asText(), is(notNullValue()));
-        assertThat(nameNode.get("value").asText(), is(notNullValue()));
-        assertThat(descriptionNode.get("value").asText(), is(notNullValue()));
-        assertThat(domainIdNode.get("value").asText(), is(notNullValue()));
-        assertThat(versionIdNode.get("value").asText(), is(notNullValue()));
-        assertThat(legislationReferenceNode.get(0), is(notNullValue()));
-        assertThat(requirementGroup.get(0), is(notNullValue()));
-        assertThat(parentCriterionNode.get("Id").get("value"), is(notNullValue()));
-
-        get(fullUrl).then().statusCode(200).assertThat()
-                .body("Id.value", equalTo(idNode.get("value").asText()))
-                .body("LegislationReference[0].Title.value", equalTo(legislationReferenceNode.get(0).get("Title").get("value").asText()))
-                .body("RequirementGroup[0].Id.value", equalTo(requirementGroup.get(0).get("Id").get("value").asText()))
-                .body("ParentCriterion.Id.value", equalTo(parentCriterionNode.get("Id").get("value").asText()));
     }
 
     @Test
