@@ -34,11 +34,13 @@ public class ECertisClient implements IECertisClient {
         enableLogging();
     }
 
+    private int heapEntries = 10;
+    private int expirationTimeMinutes = 360;
     public ECertisClient(boolean cacheEnabled) {
         enableLogging();
         CacheHelper cacheHelper = new CacheHelper();
         if (cacheEnabled == true) {
-            cache = cacheHelper.createHeapCache("eCertisCache", 10, 360);
+            cache = cacheHelper.createHeapCache("eCertisCache", heapEntries, expirationTimeMinutes);
         }
     }
 
@@ -177,13 +179,13 @@ public class ECertisClient implements IECertisClient {
      * @return json String
      */
     @Override
-    public String getCriteria(String uri, String scenarioId, String domainId) {
+    public String getCriteria(String uri, String scenarioId, String domainId, @Nullable String lang) {
 
         if (scenarioId == null || scenarioId.isBlank() || domainId == null)
         {
             throw new IllegalArgumentException("'scenarioId' can not be null or blank and 'domainId' can not be null");
         }
-        uri = uri + "?scenarioId=" + scenarioId + "&domainId=" + domainId;
+        uri = uri + "?scenarioId=" + scenarioId + "&domainId=" + domainId + "&lang=" + lang;
 
         if (cache != null && cache.containsKey(uri)) {
             return cache.get(uri);

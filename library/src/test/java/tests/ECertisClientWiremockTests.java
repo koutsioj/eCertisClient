@@ -95,6 +95,7 @@ public class ECertisClientWiremockTests {
 
         String scenarioId = repetitionInfo.getCurrentRepetition() == 1 ? "1100" : "1602";
         String domainId = repetitionInfo.getCurrentRepetition() == 1 ? "1100" : "";
+        String lang = repetitionInfo.getCurrentRepetition() == 1 ? "fr" : "";
 
         //saved (raw) response from the eCertis API from postman
         String responseBodyInput = repetitionInfo.getCurrentRepetition() == 1 ?
@@ -106,7 +107,7 @@ public class ECertisClientWiremockTests {
         stubFor(get(urlEqualTo("/getCriteria?scenarioId="+scenarioId+"&domainId="+domainId))
                 .willReturn(aResponse().withBody(input)));
 
-        String getCriteriaOutput = eCertisClient.getCriteria(uri,scenarioId,domainId);
+        String getCriteriaOutput = eCertisClient.getCriteria(uri,scenarioId,domainId,lang);
 
         ObjectMapper mapper = new ObjectMapper();
         Criterion APIList = new Criterion();

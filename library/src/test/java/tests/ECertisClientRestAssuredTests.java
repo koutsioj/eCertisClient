@@ -68,9 +68,11 @@ public class ECertisClientRestAssuredTests {
         String uri = "https://ec.europa.eu/growth/tools-databases/ecertisrest/criteria";
         String scenarioId = "1602";
         String domainId = "";
+        String lang = null;
         String fullUrl = uri + "?scenarioId=" + scenarioId + "&domainId=" + domainId;
 
-        String jsonResponse = eCertisClientTest.getCriteria(uri, scenarioId, domainId);
+
+        String jsonResponse = eCertisClientTest.getCriteria(uri, scenarioId, domainId, lang);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode = null;
         try {
@@ -108,11 +110,11 @@ public class ECertisClientRestAssuredTests {
     }
 
     @Test
-    public void CriterionCall_WhenIdAndCountryFilterAreCorrect_JsonElementValuesAreNotNull_AndSpecificTestValuesAreCorrect() {
+    public void CriterionCall_WhenIdAndLangAndCountryFilterAreCorrect_JsonElementValuesAreNotNull_AndSpecificTestValuesAreCorrect() {
         String uri = "https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/";
         String id = "c27b7c4e-c837-4529-b867-ed55ce639db5";
         String version = "";
-        String lang = "";
+        String lang = "fr";
         String countryFilter = "be";
 
         String fullUrl = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
