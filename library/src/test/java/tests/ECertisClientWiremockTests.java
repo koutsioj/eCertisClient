@@ -104,7 +104,7 @@ public class ECertisClientWiremockTests {
         String input = new String(Files.readAllBytes(Paths.get(responseBodyInput)));
         String uri ="http://localhost:" + wm.port() + "/getCriteria";
 
-        stubFor(get(urlEqualTo("/getCriteria?scenarioId="+scenarioId+"&domainId="+domainId))
+        stubFor(get(urlEqualTo("/getCriteria?scenarioId="+scenarioId+"&domainId="+domainId+"&lang="+lang))
                 .willReturn(aResponse().withBody(input)));
 
         String getCriteriaOutput = eCertisClient.getCriteria(uri,scenarioId,domainId,lang);

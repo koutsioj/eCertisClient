@@ -126,7 +126,7 @@ public class ECertisClient implements IECertisClient {
         } catch (JsonProcessingException e) {
             logger.log(Level.SEVERE, "logging : Deserialization unsuccessful. \n" + e.getMessage() , new Exception("JsonProcessingException"));
         }
-        //System.out.println("jsonMarshaller is finished, URL is : "+uri);
+        System.out.println("jsonMarshaller is finished, URL is : "+uri);
 
         if (cache!=null) {
             cache.put(uri, json);
@@ -195,10 +195,11 @@ public class ECertisClient implements IECertisClient {
         return jsonMarshaller(uri, criteriaList);
     }
 
-    /**
+    /** Depending on URI
      * Returns a specific version of a criterion, with all sub criterion linked to it and for each one returns all evidences that fulfill the criterion and all laws for all countries.
-     *
+     * Returns a specific version of a criterion used by ESPD, with all sub criterion linked to it and for each one returns all evidences that fulfill the criterion and all laws for all countries.
      * @param uri           The URI of the request. E.g: https://ec.europa.eu/growth/tools-databases/ecertisrest/criteria/
+     *                                                   https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/
      * @param id            specify the id of a criterion
      * @param version       to specify version. Defaults to first version.
      * @param lang          to specify the language. Default is English.
@@ -208,6 +209,7 @@ public class ECertisClient implements IECertisClient {
     @Override
     public String getCriterion(String uri, String id, String version, @Nullable String lang, String countryFilter) {
 
+        //Some criteria accept null/empty countryFilter values but not all of them so they are not allowed either.
         if (id == null || id.isBlank() || countryFilter == null || countryFilter.isBlank() || version == null) {
             throw new IllegalArgumentException("'id' and 'countryFilter' can not be null or blank. 'version' can not be null");
         }
@@ -249,33 +251,6 @@ public class ECertisClient implements IECertisClient {
     }
 
     /**
-     * Returns a specific version of a criterion used by ESPD, with all sub criterion linked to it and for each one returns all evidences that fulfill the criterion and all laws for all countries.
-     *
-     * @param uri           The URI of the request. E.g: https://webgate.acceptance.ec.europa.eu/tools3/ecertis2/criteria/espd/
-     * @param id            specify the id of a criterion
-     * @param version       to specify version. Defaults to first version.
-     * @param lang          to specify the language. Default is English.
-     * @param countryFilter to specify national criteria.
-     * @return json String
-     */
-    @Override
-    public String getESPDCriterion(String uri, String id, String version, @Nullable String lang, @Nullable String countryFilter) {
-
-        if (id == null || id.isBlank() || version == null) {
-            throw new IllegalArgumentException("'id' can not be null or blank. 'version' can not be null");
-        }
-
-        uri = uri + id + "/" + version + "?lang=" + lang + "&countryFilter=" + countryFilter;
-
-        if (cache != null && cache.containsKey(uri)) {
-            return cache.get(uri); //gets the value for that key
-        }
-
-        Criterion criterion = new Criterion();
-        return jsonMarshaller(uri, criterion);
-    }
-
-    /**
      * Without any parameters, it returns a list of all evidences.
      * Parameters can filter the list.
      *
@@ -296,7 +271,7 @@ public class ECertisClient implements IECertisClient {
             updateDateFormatted = "";
         }
 
-        if (nationalEntity == null || (nationalEntity.isBlank() && updateDateFormatted.isBlank())) //empty strings are fine
+        if (nationalEntity == null || (nationalEntity.isBlank() && updateDateFormatted.isBlank()))
         {
             throw new IllegalArgumentException("'nationalEntity' cannot be null. Also either 'nationalEntity' or 'updateDate' need a non blank value.");
         }
