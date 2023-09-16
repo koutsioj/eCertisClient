@@ -126,7 +126,7 @@ public class ECertisClient implements IECertisClient {
         } catch (JsonProcessingException e) {
             logger.log(Level.SEVERE, "logging : Deserialization unsuccessful. \n" + e.getMessage() , new Exception("JsonProcessingException"));
         }
-        System.out.println("jsonMarshaller is finished, URL is : "+uri);
+        //System.out.println("jsonMarshaller is finished, URL is : "+uri);
 
         if (cache!=null) {
             cache.put(uri, json);
